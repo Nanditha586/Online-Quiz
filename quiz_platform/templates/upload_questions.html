@@ -1,0 +1,421 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        QuizMaster | Upload Questions
+    </title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body{
+            background:#f4f7fc;
+            color:#333;
+        }
+
+        /* Navbar */
+
+        .navbar{
+            background:linear-gradient(
+                135deg,
+                #1e3c72,
+                #2a5298
+            );
+            padding:15px 50px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .logo{
+            font-size:30px;
+            font-weight:bold;
+            color:white;
+        }
+
+        .logo span{
+            color:#ffd700;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:20px;
+        }
+
+        .nav-links a{
+            text-decoration:none;
+            color:white;
+            font-weight:600;
+            padding:10px 18px;
+            border-radius:8px;
+            transition:0.3s;
+        }
+
+        .nav-links a:hover{
+            background:rgba(
+                255,
+                255,
+                255,
+                0.15
+            );
+            transform:translateY(-2px);
+        }
+
+        /* Main Container */
+
+        .container{
+            width:90%;
+            margin:40px auto;
+        }
+
+        .page-title{
+            text-align:center;
+            color:#2a5298;
+            font-size:38px;
+            margin-bottom:35px;
+        }
+
+        /* Upload Card */
+
+        .upload-card{
+            max-width:700px;
+            margin:auto;
+            background:white;
+            padding:35px;
+            border-radius:18px;
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+        }
+
+        .upload-card h2{
+            text-align:center;
+            color:#2a5298;
+            margin-bottom:25px;
+        }
+
+        .form-group{
+            margin-bottom:25px;
+        }
+
+        .form-group label{
+            display:block;
+            margin-bottom:10px;
+            font-weight:600;
+            color:#444;
+        }
+
+       select,
+input[type="file"],
+input[type="text"],
+input[type="number"],
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    font-size:15px;
+    background:white;
+}
+
+        select:focus,
+input[type="file"]:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus{
+    outline:none;
+    border-color:#2a5298;
+}
+textarea{
+    resize:vertical;
+    min-height:120px;
+}
+
+        .upload-btn{
+            width:100%;
+            border:none;
+            cursor:pointer;
+            padding:14px;
+            font-size:16px;
+            font-weight:bold;
+            color:white;
+            border-radius:10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1e3c72,
+                    #2a5298
+                );
+
+            transition:0.3s;
+        }
+
+        .upload-btn:hover{
+            transform:translateY(-2px);
+            opacity:0.95;
+        }
+
+        .csv-note{
+            margin-top:20px;
+            padding:15px;
+            background:#eef4ff;
+            border-left:4px solid #2a5298;
+            border-radius:8px;
+            color:#555;
+            font-size:14px;
+        }
+
+        /* Responsive */
+
+        @media(max-width:768px){
+
+            .navbar{
+                flex-direction:column;
+                gap:15px;
+            }
+
+            .nav-links{
+                flex-wrap:wrap;
+                justify-content:center;
+            }
+
+            .container{
+                width:95%;
+            }
+
+            .page-title{
+                font-size:28px;
+            }
+
+            .upload-card{
+                padding:25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Quiz<span>Master</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/analytics/">
+                Home
+            </a>
+
+            <a href="/quiz-list/">
+                Quiz List
+            </a>
+
+            <a href="/leaderboard/">
+                Leaderboard
+            </a>
+
+            <a href="/logout/">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+    <!-- Main Content -->
+
+    <div class="container">
+
+        <h1 class="page-title">
+            Upload Questions
+        </h1>
+
+        <div class="upload-card">
+
+            <h2>
+                Bulk Upload Quiz Questions
+            </h2>
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <div class="form-group">
+
+    <label>
+        Select Year
+    </label>
+
+    <select name="year" required>
+
+        <option value="1">
+            1st Year
+        </option>
+
+        <option value="2">
+            2nd Year
+        </option>
+
+        <option value="3">
+            3rd Year
+        </option>
+
+        <option value="4">
+            4th Year
+        </option>
+
+    </select>
+
+</div>
+
+<div class="form-group">
+
+    <label>
+        Select Branch
+    </label>
+
+    <select name="branch" required>
+
+        <option value="CSE">
+            Computer Science Engineering
+        </option>
+
+        <option value="ECE">
+            Electronics & Communication
+        </option>
+
+        <option value="EEE">
+            Electrical & Electronics
+        </option>
+
+        <option value="IT">
+            Information Technology
+        </option>
+
+        <option value="MECH">
+            Mechanical
+        </option>
+
+        <option value="CIVIL">
+            Civil
+        </option>
+
+    </select>
+
+</div>
+                    <div class="form-group">
+
+    <label>
+        Quiz Title
+    </label>
+
+    <input
+        type="text"
+        name="quiz_title"
+        placeholder="Enter Quiz Title"
+        required
+    >
+
+</div>
+
+<div class="form-group">
+
+    <label>
+        Quiz Description
+    </label>
+
+    <textarea
+        name="description"
+        placeholder="Enter Quiz Description"
+        required
+    ></textarea>
+
+</div>
+
+<div class="form-group">
+
+    <label>
+        Duration (Minutes)
+    </label>
+
+    <input
+        type="number"
+        name="duration"
+        min="1"
+        placeholder="Enter Duration"
+        required
+    >
+
+</div>
+                    
+
+               
+
+                <div class="form-group">
+
+                    <label>
+                        Choose CSV File
+                    </label>
+
+                    <input
+                        type="file"
+                        name="file"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="upload-btn"
+                >
+                    Upload Questions
+                </button>
+
+            </form>
+
+            <div class="csv-note">
+
+                <strong>CSV Format:</strong><br><br>
+
+                question, option1, option2, option3,
+                option4, correct_answer, marks,
+                negative_marks
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

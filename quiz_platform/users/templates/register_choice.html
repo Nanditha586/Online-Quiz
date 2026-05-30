@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="text-align:center; margin-top:100px;">
+
+    <h1>Select Registration Type</h1>
+
+    <br><br>
+
+    <a href="/register/student/">
+
+        <button
+            style="
+                padding:15px 30px;
+                margin-right:20px;
+                font-size:18px;
+            "
+        >
+            Student Registration
+        </button>
+
+    </a>
+
+    <a href="/register/staff/">
+
+        <button
+            style="
+                padding:15px 30px;
+                font-size:18px;
+            "
+        >
+            Staff Registration
+        </button>
+
+    </a>
+
+</div>
+
+{% endblock %}

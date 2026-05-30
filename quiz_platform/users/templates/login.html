@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-container">
+
+    <h2>Login</h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Username"
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+        >
+
+        <button
+            type="submit"
+            class="auth-btn"
+        >
+            Login
+        </button>
+
+    </form>
+    <div class="auth-links">
+
+        <p>
+            New User?Register as:
+        </p>
+
+        <a href="/register/"><button class="auth-btn">
+            Register</button>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

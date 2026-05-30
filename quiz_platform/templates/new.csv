@@ -1,0 +1,11 @@
+question,option1,option2,option3,option4,correct_answer,marks,negative_marks
+HTML stands for?,HyperText Markup Language,HighText Markup Language,HyperText Machine Language,HighText Machine Language,HyperText Markup Language,1,0
+Tag used to create a hyperlink in HTML?,<a>,<link>,<href>,<hyperlink>,<a>,1,0
+Tag used to create a line break in HTML?,<br>,<break>,<lb>,<linebreak>,<br>,1,0
+Tag used to create a paragraph in HTML?,<paragraph>,<par>,<p>,<pg>,<p>,1,0
+Tag used to create a heading in HTML?,<heading>,<head>,<h>,<h1>,<h1>,1,0
+Tag used to create an unordered list in HTML?,<ol>,<li>,<ul>,<list>,<ul>,1,0
+Tag used to create a table in HTML?,<tab>,<table>,<tbl>,<t>,<table>,1,0
+What do you mean by standalone tag in HTML?,A tag that does not require a closing tag,A tag that requires a closing tag,A tag that can be used alone,A tag that is used for styling,A tag that does not require a closing tag,1,0
+What is standlone tag in HTML?,<div>,<span>,<img>,<a>,<img>,1,0
+Tag used to create a form in HTML?,<form>,<input>,<f>,<form>,<form>,1,0

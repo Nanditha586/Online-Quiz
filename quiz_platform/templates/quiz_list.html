@@ -1,0 +1,446 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        QuizMaster | Available Quizzes
+    </title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:#f4f7fc;
+            color:#333;
+        }
+
+        /* Navbar */
+
+        .navbar{
+            background:linear-gradient(
+                135deg,
+                #1e3c72,
+                #2a5298
+            );
+            padding:15px 50px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .logo{
+            font-size:30px;
+            font-weight:bold;
+            color:white;
+            letter-spacing:1px;
+        }
+
+        .logo::after{
+            content:"Master";
+            color:#ffd700;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:20px;
+        }
+
+        .nav-links a{
+            text-decoration:none;
+            color:white;
+            font-weight:600;
+            padding:10px 18px;
+            border-radius:8px;
+            transition:0.3s;
+        }
+
+        .nav-links a:hover{
+            background:rgba(
+                255,
+                255,
+                255,
+                0.15
+            );
+            transform:translateY(-2px);
+        }
+
+        /* Main Container */
+
+        .container{
+            width:90%;
+            margin:40px auto;
+        }
+
+        .page-title{
+            text-align:center;
+            color:#2a5298;
+            margin-bottom:40px;
+            font-size:38px;
+        }
+
+        /* Quiz Grid */
+
+        .quiz-grid{
+            display:grid;
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(320px,1fr)
+                );
+            gap:30px;
+        }
+
+        /* Quiz Card */
+
+        .quiz-card{
+            background:white;
+            border-radius:18px;
+            padding:25px;
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+
+            transition:0.3s;
+            position:relative;
+            overflow:hidden;
+        }
+
+        .quiz-card:hover{
+            transform:
+                translateY(-8px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,0.15);
+        }
+
+        .quiz-card::before{
+
+            content:"";
+
+            position:absolute;
+
+            top:0;
+            left:0;
+
+            width:100%;
+            height:6px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #1e3c72,
+                    #2a5298,
+                    #ffd700
+                );
+        }
+
+        .quiz-card h2{
+            color:#2a5298;
+            margin-bottom:15px;
+        }
+
+        .quiz-description{
+            color:#555;
+            line-height:1.6;
+            min-height:70px;
+        }
+
+        .duration{
+
+            margin-top:20px;
+
+            font-weight:600;
+
+            color:#444;
+
+            background:#eef4ff;
+
+            padding:10px;
+
+            border-radius:8px;
+        }
+
+        .quiz-btn{
+
+            display:inline-block;
+
+            margin-top:25px;
+
+            text-decoration:none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1e3c72,
+                    #2a5298
+                );
+
+            color:white;
+
+            padding:
+                12px 25px;
+
+            border-radius:10px;
+
+            font-weight:bold;
+
+            transition:0.3s;
+        }
+        .quiz-btn.disabled{
+    background: gray;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+        .quiz-btn:hover{
+
+            transform:
+                translateY(-2px);
+
+            opacity:0.95;
+        }
+
+        /* Empty State */
+
+        .empty-box{
+
+            text-align:center;
+
+            background:white;
+
+            padding:50px;
+
+            border-radius:15px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+        }
+        /* Pagination */
+
+.pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    margin-top:40px;
+    flex-wrap:wrap;
+}
+
+.pagination a{
+    text-decoration:none;
+    padding:10px 18px;
+    background:#2a5298;
+    color:white;
+    border-radius:8px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.pagination a:hover{
+    background:#1e3c72;
+}
+
+.current-page{
+    padding:10px 18px;
+    background:#eef4ff;
+    border-radius:8px;
+    font-weight:bold;
+    color:#2a5298;
+}
+        /* Responsive */
+
+        @media(max-width:768px){
+
+            .navbar{
+
+                flex-direction:column;
+
+                gap:15px;
+            }
+
+            .nav-links{
+
+                flex-wrap:wrap;
+
+                justify-content:center;
+            }
+
+            .page-title{
+
+                font-size:28px;
+            }
+
+            .container{
+
+                width:95%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Quiz
+        </div>
+        <div class="nav-links">
+
+    {% if user_role and user_role.role == 'staff' %}
+
+        <a href="/analytics/">
+            Home
+        </a>
+    {%else%}
+        <a href="/dashboard/">
+            Home
+        </a>
+    {% endif %}
+
+
+   
+
+     <a href="/leaderboard/">
+                Leaderboard
+            </a>
+
+    {% if user_role and user_role.role == 'staff' %}
+
+        <a href="/upload-questions/">
+            Upload Questions
+        </a>
+
+    {% endif %}
+
+    <a href="/logout/">
+        Logout
+    </a>
+
+
+        
+    </nav>
+
+    <!-- Main Content -->
+
+    <div class="container">
+
+        <h1 class="page-title">
+            Available Quizzes
+        </h1>
+
+        {% if quizzes %}
+
+        <div class="quiz-grid">
+
+            {% for quiz in quizzes %}
+
+            <div class="quiz-card">
+
+                <h2>
+                    {{ quiz.title }}
+                </h2>
+
+                <p class="quiz-description">
+                    {{ quiz.description }}
+                </p>
+
+                <div class="duration">
+
+                    ⏱ Duration:
+                    {{ quiz.duration }}
+                    Minutes
+
+                </div>
+
+                {% if quiz.id in attempted_quiz_ids %}
+
+            <a class="quiz-btn disabled">
+                 Submitted ✓
+             </a>
+
+            {% else %}
+
+            <a href="/start-quiz/{{ quiz.id }}/" class="quiz-btn">
+                Start Quiz
+            </a>
+
+            {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+        <div class="pagination">
+
+    {% if quizzes.has_previous %}
+        <a href="?page=1">&laquo; First</a>
+        <a href="?page={{ quizzes.previous_page_number }}">
+            Previous
+        </a>
+    {% endif %}
+
+    <span class="current-page">
+        Page {{ quizzes.number }}
+        of
+        {{ quizzes.paginator.num_pages }}
+    </span>
+
+    {% if quizzes.has_next %}
+        <a href="?page={{ quizzes.next_page_number }}">
+            Next
+        </a>
+        <a href="?page={{ quizzes.paginator.num_pages }}">
+            Last &raquo;
+        </a>
+    {% endif %}
+
+</div>
+
+        {% else %}
+
+        <div class="empty-box">
+
+            <h2>
+                No Quizzes Available
+            </h2>
+
+            <p>
+                Please check back later.
+            </p>
+
+        </div>
+        
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

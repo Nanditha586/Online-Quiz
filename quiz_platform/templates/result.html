@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Quiz Result</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            background: #f2f2f2;
+        }
+
+        .container{
+            width: 50%;
+            margin: 50px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1{
+            color: #1e3c72;
+        }
+
+        .score{
+            font-size: 28px;
+            margin: 10px 0;
+        }
+
+        .stats p{
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        button{
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            background: #1e3c72;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover{
+            opacity:0.9;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Quiz Submitted Successfully 🎉</h1>
+
+    <div class="score">
+        Score: {{ score }}
+    </div>
+
+    <div class="stats">
+
+        <p>Total Questions: {{ total_questions }}</p>
+        <p>Attempted: {{ attempted_questions }}</p>
+        <p>Correct: {{ correct_answers }}</p>
+        <p>Wrong: {{ wrong_answers }}</p>
+
+    </div>
+
+    <a href="/leaderboard/">
+    <button>Leaderboard</button>
+</a>
+
+{% if user_role and user_role.role == 'staff' %}
+
+    <a href="/analytics/">
+        <button>Home</button>
+    </a>
+
+{% else %}
+
+    <a href="/dashboard/">
+        <button>Dashboard</button>
+    </a>
+
+{% endif %}
+
+<a href="/quiz-list/">
+    <button>Quiz List</button>
+</a>
+
+</div>
+
+</body>
+
+</html>

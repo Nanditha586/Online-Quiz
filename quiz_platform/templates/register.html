@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-container">
+
+    <h2>Create Account</h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button
+            type="submit"
+            class="auth-btn"
+        >
+            Register
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

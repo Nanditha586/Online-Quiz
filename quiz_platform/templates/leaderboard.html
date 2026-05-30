@@ -1,0 +1,334 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        QuizMaster | Leaderboard
+    </title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:#f4f7fc;
+            color:#333;
+        }
+
+        /* Navbar */
+
+        .navbar{
+            background:linear-gradient(
+                135deg,
+                #1e3c72,
+                #2a5298
+            );
+            padding:15px 50px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .logo{
+            font-size:30px;
+            font-weight:bold;
+            color:white;
+            letter-spacing:1px;
+        }
+
+        .logo span{
+            color:#ffd700;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:20px;
+        }
+
+        .nav-links a{
+            text-decoration:none;
+            color:white;
+            font-weight:600;
+            padding:10px 18px;
+            border-radius:8px;
+            transition:0.3s;
+        }
+
+        .nav-links a:hover{
+            background:rgba(
+                255,
+                255,
+                255,
+                0.15
+            );
+            transform:translateY(-2px);
+        }
+
+        /* Container */
+
+        .container{
+            width:90%;
+            margin:40px auto;
+        }
+
+        .page-title{
+            text-align:center;
+            color:#2a5298;
+            font-size:38px;
+            margin-bottom:30px;
+        }
+
+        /* Leaderboard Card */
+
+        .leaderboard-card{
+            background:white;
+            padding:30px;
+            border-radius:18px;
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+        }
+
+        /* Table */
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th{
+            background:#2a5298;
+            color:white;
+            padding:16px;
+            font-size:16px;
+        }
+
+        td{
+            padding:16px;
+            text-align:center;
+            border-bottom:1px solid #e5e5e5;
+        }
+
+        tr:hover{
+            background:#f8f9ff;
+        }
+
+        /* Rank Badges */
+
+        .rank{
+            font-weight:bold;
+        }
+
+        .gold{
+            color:#d4af37;
+            font-size:20px;
+        }
+
+        .silver{
+            color:#a8a8a8;
+            font-size:20px;
+        }
+
+        .bronze{
+            color:#cd7f32;
+            font-size:20px;
+        }
+
+        .score{
+            font-weight:bold;
+            color:#198754;
+        }
+
+        /* Empty State */
+
+        .empty-box{
+            background:white;
+            padding:50px;
+            text-align:center;
+            border-radius:18px;
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+        }
+
+        /* Responsive */
+
+        @media(max-width:768px){
+
+            .navbar{
+                flex-direction:column;
+                gap:15px;
+            }
+
+            .nav-links{
+                flex-wrap:wrap;
+                justify-content:center;
+            }
+
+            .container{
+                width:95%;
+            }
+
+            .page-title{
+                font-size:28px;
+            }
+
+            table{
+                font-size:14px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Quiz<span>Master</span>
+        </div>
+
+        <div class="nav-links">
+
+    {% if user_role and user_role.role == 'staff' %}
+
+        <a href="/analytics/">
+            Home
+        </a>
+    {%else%}
+        <a href="/dashboard/">
+            Home
+        </a>
+    {% endif %}
+
+    <a href="/quiz-list/">
+        Quiz List
+    </a>
+
+    {% if user_role and user_role.role == 'staff' %}
+
+        <a href="/upload-questions/">
+            Upload Questions
+        </a>
+
+    {% endif %}
+
+    <a href="/logout/">
+        Logout
+    </a>
+
+</div>
+    </nav>
+
+    <!-- Main Content -->
+
+    <div class="container">
+
+        <h1 class="page-title">
+            🏆 Leaderboard
+        </h1>
+
+        {% if leaderboard_data %}
+
+        <div class="leaderboard-card">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Rank</th>
+
+                        <th>User</th>
+
+                        <th>Quiz</th>
+
+                        <th>Score</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for result in leaderboard_data %}
+
+                    <tr>
+
+                        <td class="rank">
+
+                            {% if forloop.counter == 1 %}
+                                <span class="gold">🥇</span>
+                            {% elif forloop.counter == 2 %}
+                                <span class="silver">🥈</span>
+                            {% elif forloop.counter == 3 %}
+                                <span class="bronze">🥉</span>
+                            {% else %}
+                                #{{ forloop.counter }}
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ result.user.username }}
+                        </td>
+
+                        <td>
+                            {{ result.quiz.title }}
+                        </td>
+
+                        <td class="score">
+                            {{ result.score }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-box">
+
+            <h2>
+                No leaderboard data available
+            </h2>
+
+            <p>
+                Complete a quiz to appear on the leaderboard.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

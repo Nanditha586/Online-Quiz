@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>{{ quiz.title }}</h1>
+
+    <!-- TIMER -->
+    <div class="timer" id="timer"></div>
+
+    <!-- PROGRESS BAR -->
+    <div style="width:100%;background:#ddd;border-radius:10px;margin-bottom:20px;">
+        <div id="progressBar"
+             style="width:0%;height:20px;background:#2563eb;border-radius:10px;"></div>
+    </div>
+
+    <form method="POST" action="/submit-quiz/{{ quiz.id }}/" id="quizForm">
+        {% csrf_token %}
+
+        {% for question in questions %}
+
+        <div class="question-box" style="display:none;">
+
+            <h3>Question {{ forloop.counter }}</h3>
+
+            <p>{{ question.question }}</p>
+
+            <br>
+
+            <!-- OPTION 1 -->
+            <label>
+                <input type="radio"
+                       name="q_{{ question.id }}"
+                       value="{{ question.option1 }}"
+                       onchange="saveAnswer('{{ question.id }}','{{ question.option1 }}')">
+                {{ question.option1 }}
+            </label>
+
+            <br><br>
+
+            <!-- OPTION 2 -->
+            <label>
+                <input type="radio"
+                       name="q_{{ question.id }}"
+                       value="{{ question.option2 }}"
+                       onchange="saveAnswer('{{ question.id }}','{{ question.option2 }}')">
+                {{ question.option2 }}
+            </label>
+
+            <br><br>
+
+            <!-- OPTION 3 -->
+            <label>
+                <input type="radio"
+                       name="q_{{ question.id }}"
+                       value="{{ question.option3 }}"
+                       onchange="saveAnswer('{{ question.id }}','{{ question.option3 }}')">
+                {{ question.option3 }}
+            </label>
+
+            <br><br>
+
+            <!-- OPTION 4 -->
+            <label>
+                <input type="radio"
+                       name="q_{{ question.id }}"
+                       value="{{ question.option4 }}"
+                       onchange="saveAnswer('{{ question.id }}','{{ question.option4 }}')">
+                {{ question.option4 }}
+            </label>
+
+            <br><br>
+
+            <!-- CLEAR BUTTON -->
+            <button type="button"
+                    class="quiz-btn"
+                    onclick="clearResponse('{{ question.id }}')">
+                Clear Response
+            </button>
+
+        </div>
+
+        {% endfor %}
+
+        <br>
+
+        <!-- NAVIGATION -->
+        <button type="button" class="quiz-btn" onclick="previousQuestion()">
+            Previous
+        </button>
+
+        <button type="button" class="quiz-btn" onclick="nextQuestion()">
+            Next
+        </button>
+
+        <button type="submit" class="submit-btn">
+            Submit Quiz
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+let currentQuestion = 0;
+let questions = document.querySelectorAll('.question-box');
+let progressBar = document.getElementById('progressBar');
+
+/* SHOW QUESTION */
+function showQuestion(index){
+
+    questions.forEach(q => q.style.display = 'none');
+    questions[index].style.display = 'block';
+
+    let progress = ((index+1)/questions.length)*100;
+    progressBar.style.width = progress + '%';
+}
+
+/* NAVIGATION */
+function nextQuestion(){
+    if(currentQuestion < questions.length-1){
+        currentQuestion++;
+        showQuestion(currentQuestion);
+    }
+}
+
+function previousQuestion(){
+    if(currentQuestion > 0){
+        currentQuestion--;
+        showQuestion(currentQuestion);
+    }
+}
+
+/* SAVE ANSWER */
+function saveAnswer(questionId, selectedAnswer){
+
+    fetch('/save-answer/', {
+        method:'POST',
+        headers:{
+            'Content-Type':'application/x-www-form-urlencoded',
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+        body:
+            'question_id=' + questionId +
+            '&selected_answer=' + encodeURIComponent(selectedAnswer) +
+            '&quiz_id={{ quiz.id }}'
+    });
+}
+
+/* CLEAR RESPONSE */
+function clearResponse(questionId){
+
+    let box = questions[currentQuestion];
+    let radios = box.querySelectorAll('input[type="radio"]');
+
+    radios.forEach(r => r.checked = false);
+
+    fetch('/save-answer/', {
+        method:'POST',
+        headers:{
+            'Content-Type':'application/x-www-form-urlencoded',
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+        body:
+            'question_id=' + questionId +
+            '&selected_answer=' +
+            '&quiz_id={{ quiz.id }}'
+    });
+}
+
+/* TIMER */
+let timeLeft = {{ quiz.duration }} * 60;
+let timer = document.getElementById("timer");
+
+let countdown = setInterval(() => {
+
+    let min = Math.floor(timeLeft / 60);
+    let sec = timeLeft % 60;
+
+    timer.innerHTML = `${min}:${sec < 10 ? '0'+sec : sec}`;
+
+    timeLeft--;
+
+    if(timeLeft < 0){
+        clearInterval(countdown);
+        alert("Time Over!");
+        document.getElementById("quizForm").submit();
+    }
+
+}, 1000);
+
+/* INIT */
+showQuestion(currentQuestion);
+
+/* SECURITY (optional) */
+window.onbeforeunload = () => "Leave quiz?";
+
+</script>
+
+{% endblock %}
