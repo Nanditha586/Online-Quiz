@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Question</title>
+
+    <style>
+
+        body{
+            font-family:'Segoe UI',sans-serif;
+            background:#f4f7fc;
+        }
+
+        .container{
+            max-width:800px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+            box-shadow:0 4px 15px rgba(0,0,0,.08);
+        }
+
+        h1{
+            text-align:center;
+            color:#2a5298;
+            margin-bottom:25px;
+        }
+
+        input,
+        textarea{
+            width:100%;
+            padding:12px;
+            margin-bottom:15px;
+            border:1px solid #ddd;
+            border-radius:8px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            background:#2a5298;
+            color:white;
+            border-radius:8px;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            opacity:.9;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Edit Question</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <textarea
+            name="question"
+            rows="3"
+            required
+        >{{ question.question }}</textarea>
+
+        <input
+            type="text"
+            name="option1"
+            value="{{ question.option1 }}"
+            required
+        >
+
+        <input
+            type="text"
+            name="option2"
+            value="{{ question.option2 }}"
+            required
+        >
+
+        <input
+            type="text"
+            name="option3"
+            value="{{ question.option3 }}"
+            required
+        >
+
+        <input
+            type="text"
+            name="option4"
+            value="{{ question.option4 }}"
+            required
+        >
+
+        <input
+            type="text"
+            name="correct_answer"
+            value="{{ question.correct_answer }}"
+            required
+        >
+
+        <input
+            type="number"
+            step="0.01"
+            name="marks"
+            value="{{ question.marks }}"
+            required
+        >
+
+        <input
+            type="number"
+            step="0.01"
+            name="negative_marks"
+            value="{{ question.negative_marks }}"
+            required
+        >
+
+        <button type="submit">
+            Update Question
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

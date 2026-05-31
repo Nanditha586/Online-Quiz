@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Quizzes</title>
+
+    <style>
+
+        body{
+            font-family:'Segoe UI',sans-serif;
+            background:#f4f7fc;
+            margin:0;
+        }
+
+        .navbar{
+            background:linear-gradient(
+                135deg,
+                #1e3c72,
+                #2a5298
+            );
+            padding:15px 50px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logo{
+            color:white;
+            font-size:30px;
+            font-weight:bold;
+        }
+
+        .logo span{
+            color:#ffd700;
+        }
+
+        .nav-links a{
+            color:white;
+            font-weight:600;
+            text-decoration:none;
+            margin-left:20px;
+        }
+
+        .container{
+            width:90%;
+            margin:40px auto;
+        }
+
+        .title{
+            text-align:center;
+            color:#2a5298;
+            margin-bottom:30px;
+        }
+
+        .quiz-grid{
+            display:grid;
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(320px,1fr)
+                );
+            gap:25px;
+        }
+
+        .quiz-card{
+            background:white;
+            padding:25px;
+            border-radius:18px;
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+        }
+
+        .quiz-card h2{
+            color:#2a5298;
+            margin-bottom:15px;
+        }
+
+        .quiz-info{
+            margin:8px 0;
+            color:#555;
+        }
+
+        .view-btn{
+            display:inline-block;
+            margin-top:20px;
+            background:#2a5298;
+            color:white;
+            text-decoration:none;
+            padding:12px 20px;
+            border-radius:10px;
+        }
+
+        .empty{
+            text-align:center;
+            background:white;
+            padding:40px;
+            border-radius:15px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        Quiz<span>Master</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/analytics/">
+            Home
+        </a>
+        <a href="/quiz-list/">
+                Quiz List
+            </a>
+
+            <a href="/leaderboard/">
+                Leaderboard
+            </a>
+        <a href="/upload-questions/">
+            Upload Questions
+        </a>
+        <a href="/logout/">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1 class="title">
+        My Uploaded Quizzes
+    </h1>
+
+    {% if quizzes %}
+
+    <div class="quiz-grid">
+
+        {% for quiz in quizzes %}
+
+        <div class="quiz-card">
+
+            <h2>
+                {{ quiz.title }}
+            </h2>
+
+            <p class="quiz-info">
+                {{ quiz.description }}
+            </p>
+
+            <p class="quiz-info">
+                <strong>Year:</strong>
+                {{ quiz.year }}
+            </p>
+
+            <p class="quiz-info">
+                <strong>Branch:</strong>
+                {{ quiz.branch }}
+            </p>
+
+            <p class="quiz-info">
+                <strong>Duration:</strong>
+                {{ quiz.duration }} Minutes
+            </p>
+
+            <a
+                href="{% url 'quiz_questions' quiz.id %}"
+                class="view-btn"
+            >
+                View Questions
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+
+        <h2>
+            No quizzes uploaded yet.
+        </h2>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

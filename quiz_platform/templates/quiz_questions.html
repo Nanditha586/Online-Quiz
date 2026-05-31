@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>
+        Quiz Questions
+    </title>
+
+    <style>
+
+        body{
+            font-family:'Segoe UI',sans-serif;
+            background:#f4f7fc;
+            margin:0;
+        }
+
+        .container{
+            width:90%;
+            margin:40px auto;
+        }
+
+        h1{
+            color:#2a5298;
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .question-card{
+            background:white;
+            padding:20px;
+            margin-bottom:20px;
+            border-radius:15px;
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+        }
+
+        .question{
+            font-size:18px;
+            font-weight:bold;
+            color:#2a5298;
+            margin-bottom:15px;
+        }
+
+        .option{
+            padding:8px 0;
+        }
+
+        .correct{
+            color:green;
+            font-weight:bold;
+            margin-top:10px;
+        }
+        .action-buttons{
+    margin-top:15px;
+}
+
+.edit-btn,
+.delete-btn{
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:8px;
+    color:white;
+    font-weight:bold;
+    margin-right:10px;
+}
+
+.edit-btn{
+    background:#2a5298;
+}
+
+.delete-btn{
+    background:#dc3545;
+}
+.pagination{
+    text-align:center;
+    margin-top:30px;
+}
+
+.pagination a{
+    text-decoration:none;
+    background:#2a5298;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    margin:0 5px;
+}
+
+.pagination span{
+    margin:0 15px;
+    font-weight:bold;
+}
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <h1>
+        {{ quiz.title }} Questions
+    </h1>
+
+    {% for question in questions %}
+
+    <div class="question-card">
+
+    <div class="question">
+        Q{{ forloop.counter }}.
+        {{ question.question }}
+    </div>
+
+    <div class="option">
+        A. {{ question.option1 }}
+    </div>
+
+    <div class="option">
+        B. {{ question.option2 }}
+    </div>
+
+    <div class="option">
+        C. {{ question.option3 }}
+    </div>
+
+    <div class="option">
+        D. {{ question.option4 }}
+    </div>
+
+    <div class="correct">
+        Correct Answer:
+        {{ question.correct_answer }}
+    </div>
+
+    <div class="action-buttons">
+
+        <a
+            href="{% url 'edit_question' question.id %}"
+            class="edit-btn"
+        >
+            ✏ Edit
+        </a>
+
+        <a
+            href="{% url 'delete_question' question.id %}"
+            class="delete-btn"
+            onclick="return confirm('Delete this question?')"
+        >
+            🗑 Delete
+        </a>
+
+    </div>
+
+</div>
+    {% endfor %}
+<div class="pagination">
+
+    {% if questions.has_previous %}
+
+        <a href="?page=1">
+            First
+        </a>
+
+        <a href="?page={{ questions.previous_page_number }}">
+            Previous
+        </a>
+
+    {% endif %}
+
+    <span>
+        Page {{ questions.number }}
+        of
+        {{ questions.paginator.num_pages }}
+    </span>
+
+    {% if questions.has_next %}
+
+        <a href="?page={{ questions.next_page_number }}">
+            Next
+        </a>
+
+        <a href="?page={{ questions.paginator.num_pages }}">
+            Last
+        </a>
+
+    {% endif %}
+
+</div>
+</div>
+
+</body>
+</html>

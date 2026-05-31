@@ -56,5 +56,26 @@ urlpatterns = [
         views.upload_questions,
         name='upload_questions'
     ),
-    
+    path(
+    'my-quizzes/',
+    views.my_quizzes,
+    name='my_quizzes'
+),
+
+path(
+    'quiz-questions/<int:quiz_id>/',
+    views.quiz_questions,
+    name='quiz_questions'
+),
+   path(
+        'edit-question/<int:question_id>/',
+        views.edit_question,
+        name='edit_question'
+    ),
+
+    path(
+        'delete-question/<int:question_id>/',
+        views.delete_question,
+        name='delete_question'
+    ),
 ]

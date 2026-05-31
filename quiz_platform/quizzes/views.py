@@ -474,3 +474,113 @@ def upload_questions(request):
         request,
         'upload_questions.html'
     )
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Quiz
+
+
+@login_required
+def my_quizzes(request):
+
+    quizzes = Quiz.objects.filter(
+        created_by=request.user
+    ).order_by('-created_at')
+
+    return render(
+        request,
+        'my_quizzes.html',
+        {
+            'quizzes': quizzes
+        }
+    )
+from django.shortcuts import get_object_or_404
+from .models import Quiz, Question
+
+from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404
+@staff_only
+@login_required
+def quiz_questions(request, quiz_id):
+
+    quiz = get_object_or_404(
+        Quiz,
+        id=quiz_id,
+        created_by=request.user
+    )
+
+    questions_list = Question.objects.filter(
+        quiz=quiz
+    ).order_by('id')
+
+    paginator = Paginator(
+        questions_list,
+        10
+    )  # 10 questions per page
+
+    page_number = request.GET.get('page')
+
+    questions = paginator.get_page(
+        page_number
+    )
+
+    return render(
+        request,
+        'quiz_questions.html',
+        {
+            'quiz': quiz,
+            'questions': questions
+        }
+    )
+from django.shortcuts import redirect
+
+@login_required
+def edit_question(request, question_id):
+
+    question = get_object_or_404(
+        Question,
+        id=question_id,
+        quiz__created_by=request.user
+    )
+
+    if request.method == "POST":
+
+        question.question = request.POST['question']
+        question.option1 = request.POST['option1']
+        question.option2 = request.POST['option2']
+        question.option3 = request.POST['option3']
+        question.option4 = request.POST['option4']
+        question.correct_answer = request.POST['correct_answer']
+        question.marks = request.POST['marks']
+        question.negative_marks = request.POST['negative_marks']
+
+        question.save()
+
+        return redirect(
+            'quiz_questions',
+            quiz_id=question.quiz.id
+        )
+
+    return render(
+        request,
+        'edit_question.html',
+        {
+            'question': question
+        }
+    )
+@login_required
+def delete_question(request, question_id):
+
+    question = get_object_or_404(
+        Question,
+        id=question_id,
+        quiz__created_by=request.user
+    )
+
+    quiz_id = question.quiz.id
+
+    question.delete()
+
+    return redirect(
+        'quiz_questions',
+        quiz_id=quiz_id
+    )
