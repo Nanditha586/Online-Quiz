@@ -1,100 +1,218 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
 
-<title>Student Profile</title>
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Student Profile
+</title>
 
 <style>
 
-body{
-    font-family:'Segoe UI';
-    background:#f4f7fc;
-}
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Segoe UI',sans-serif;
+    }
 
-.container{
-    width:700px;
-    margin:40px auto;
-}
+    body{
+        background:#f4f7fc;
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
 
-.profile-card{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
+    .container{
+        width:100%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:20px;
+    }
 
-.profile-row{
-    margin-bottom:15px;
-}
+    .profile-card{
+        width:700px;
+        background:white;
+        padding:35px;
+        border-radius:20px;
+        box-shadow:
+            0 8px 25px
+            rgba(0,0,0,.08);
+    }
 
-.label{
-    font-weight:bold;
-    color:#1e3c72;
-}
+    .profile-card h2{
+        text-align:center;
+        color:#1e3c72;
+        margin-bottom:30px;
+        font-size:32px;
+    }
 
-.value{
-    margin-top:5px;
-}
+    .profile-row{
+        display:flex;
+        align-items:center;
+        margin-bottom:18px;
+    }
 
-.edit-btn{
-    background:#1e3c72;
-    color:white;
-    border:none;
-    padding:12px 25px;
-    border-radius:8px;
-    cursor:pointer;
-}
+    .label{
+        width:150px;
+        font-weight:700;
+        color:#1e3c72;
+        font-size:16px;
+    }
 
-.edit-btn:hover{
-    opacity:.9;
-}
+    .value{
+        flex:1;
+        background:#f8faff;
+        border:1px solid #dbe7ff;
+        padding:14px 18px;
+        border-radius:12px;
+        color:#333;
+        font-weight:500;
+        box-shadow:
+            0 2px 8px
+            rgba(0,0,0,.04);
+    }
 
-/* Modal */
+    .edit-btn{
+        width:100%;
+        margin-top:25px;
+        border:none;
+        padding:14px;
+        font-size:16px;
+        font-weight:600;
+        color:white;
+        border-radius:12px;
+        cursor:pointer;
 
-.modal{
-    display:none;
-    position:fixed;
-    z-index:1000;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.5);
-}
+        background:
+            linear-gradient(
+                135deg,
+                #1e3c72,
+                #2a5298
+            );
 
-.modal-content{
-    background:white;
-    width:500px;
-    margin:5% auto;
-    padding:25px;
-    border-radius:15px;
-}
+        transition:.3s;
+    }
 
-.modal-content input{
-    width:100%;
-    padding:12px;
-    margin-bottom:15px;
-    border:1px solid #ddd;
-    border-radius:8px;
-}
+    .edit-btn:hover{
+        transform:translateY(-2px);
+    }
 
-.save-btn{
-    background:#198754;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:8px;
-}
+    /* Modal */
 
-.close-btn{
-    background:#dc3545;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:8px;
-}
+    .modal{
+        display:none;
+        position:fixed;
+        z-index:1000;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+        background:
+            rgba(0,0,0,.5);
+    }
+
+    .modal-content{
+        background:white;
+        width:500px;
+        max-width:90%;
+        margin:5% auto;
+        padding:30px;
+        border-radius:20px;
+        box-shadow:
+            0 10px 30px
+            rgba(0,0,0,.15);
+    }
+
+    .modal-content h2{
+        text-align:center;
+        color:#1e3c72;
+        margin-bottom:25px;
+    }
+
+    .modal-content input{
+        width:100%;
+        padding:12px;
+        margin-bottom:15px;
+        border:1px solid #ddd;
+        border-radius:10px;
+        font-size:15px;
+    }
+
+    .modal-content input:focus{
+        outline:none;
+        border-color:#2a5298;
+    }
+
+    .button-group{
+        display:flex;
+        gap:10px;
+        margin-top:10px;
+    }
+
+    .save-btn{
+        flex:1;
+        background:#198754;
+        color:white;
+        border:none;
+        padding:12px;
+        border-radius:10px;
+        cursor:pointer;
+        font-size:15px;
+        font-weight:600;
+    }
+
+    .close-btn{
+        flex:1;
+        background:#dc3545;
+        color:white;
+        border:none;
+        padding:12px;
+        border-radius:10px;
+        cursor:pointer;
+        font-size:15px;
+        font-weight:600;
+    }
+
+    .save-btn:hover,
+    .close-btn:hover{
+        opacity:.9;
+    }
+
+    @media(max-width:768px){
+
+        .profile-card{
+            width:100%;
+            padding:25px;
+        }
+
+        .profile-row{
+            flex-direction:column;
+            align-items:flex-start;
+            gap:8px;
+        }
+
+        .label{
+            width:100%;
+        }
+
+        .value{
+            width:100%;
+        }
+    }
 
 </style>
 
@@ -104,50 +222,68 @@ body{
 
 <div class="container">
 
-    <div class="profile-card">
+<div class="profile-card">
 
-        <h2>Student Profile</h2>
+    <h2>
+        Student Profile
+    </h2>
 
-        <br>
+    <div class="profile-row">
 
-        <div class="profile-row">
-            <div class="label">Username</div>
-            <div class="value">
-                {{ user.username }}
-            </div>
+        <div class="label">
+            Username :
         </div>
 
-        <div class="profile-row">
-            <div class="label">Email</div>
-            <div class="value">
-                {{ user.email }}
-            </div>
+        <div class="value">
+            {{ user.username }}
         </div>
-
-        <div class="profile-row">
-            <div class="label">Branch</div>
-            <div class="value">
-                {{ profile.branch }}
-            </div>
-        </div>
-
-        <div class="profile-row">
-            <div class="label">Year</div>
-            <div class="value">
-                {{ profile.year }}
-            </div>
-        </div>
-
-        <br>
-
-        <button
-            class="edit-btn"
-            onclick="openModal()"
-        >
-            Edit Profile
-        </button>
 
     </div>
+
+    <div class="profile-row">
+
+        <div class="label">
+            Email :
+        </div>
+
+        <div class="value">
+            {{ user.email }}
+        </div>
+
+    </div>
+
+    <div class="profile-row">
+
+        <div class="label">
+            Branch :
+        </div>
+
+        <div class="value">
+            {{ profile.branch }}
+        </div>
+
+    </div>
+
+    <div class="profile-row">
+
+        <div class="label">
+            Year :
+        </div>
+
+        <div class="value">
+            {{ profile.year }}
+        </div>
+
+    </div>
+
+    <button
+        class="edit-btn"
+        onclick="openModal()"
+    >
+        ✏ Edit Profile
+    </button>
+
+</div>
 
 </div>
 
@@ -158,53 +294,55 @@ body{
     class="modal"
 >
 
-    <div class="modal-content">
+<div class="modal-content">
 
-        <h2>Edit Profile</h2>
+    <h2>
+        Edit Profile
+    </h2>
 
-        <br>
+    <form method="POST">
 
-        <form method="POST">
+        {% csrf_token %}
 
-            {% csrf_token %}
+        <input
+            type="text"
+            value="{{ user.username }}"
+            readonly
+        >
 
-            <input
-                type="text"
-                value="{{ user.username }}"
-                readonly
-            >
+        <input
+            type="email"
+            value="{{ user.email }}"
+            readonly
+        >
 
-            <input
-                type="email"
-                value="{{ user.email }}"
-                readonly
-            >
+        <input
+            type="text"
+            name="branch"
+            value="{{ profile.branch }}"
+            readonly
+        >
 
-            <input
-                type="text"
-                name="branch"
-                value="{{ profile.branch }}"
-                readonly
-            >
+        <input
+            type="text"
+            name="year"
+            value="{{ profile.year }}"
+            required
+        >
 
-            <input
-                type="text"
-                name="year"
-                value="{{ profile.year }}"
-                required
-            >
+        <input
+            type="password"
+            name="password"
+            placeholder="New Password"
+        >
 
-            <input
-                type="password"
-                name="password"
-                placeholder="New Password"
-            >
+        <input
+            type="password"
+            name="confirm_password"
+            placeholder="Confirm Password"
+        >
 
-            <input
-                type="password"
-                name="confirm_password"
-                placeholder="Confirm Password"
-            >
+        <div class="button-group">
 
             <button
                 type="submit"
@@ -221,21 +359,26 @@ body{
                 Cancel
             </button>
 
-        </form>
+        </div>
 
-    </div>
+    </form>
+
+</div>
+```
 
 </div>
 
 <script>
 
 function openModal(){
+
     document.getElementById(
         "editModal"
     ).style.display="block";
 }
 
 function closeModal(){
+
     document.getElementById(
         "editModal"
     ).style.display="none";
@@ -249,6 +392,7 @@ window.onclick=function(event){
     );
 
     if(event.target==modal){
+
         modal.style.display="none";
     }
 }

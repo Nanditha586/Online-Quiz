@@ -1,0 +1,6 @@
+question,option1,option2,option3,option4,correct_answer,marks,negative_marks
+What is SQL?,Structured Query Language,Simple Query Language,Structured Question Language,Simple Question Language,Structured Query Language,1,0
+Which of the following is a valid SQL statement?,SELECT * FROM table_name;,GET ALL FROM table_name;,FETCH ALL FROM table_name;,RETRIEVE ALL FROM table_name;,SELECT * FROM table_name;,1,0
+Which SQL command is used to delete data from a database?,DELETE,REMOVE,ERASE,CLEAR,DELETE,1,0
+Which SQL command is used to update data in a database?,UPDATE,MODIFY,CHANGE,ALTER,UPDATE,1,0
+Which SQL command is used to create a new table in a database?,CREATE TABLE,NEW TABLE,MAKE TABLE,BUILD TABLE,CREATE TABLE,1,0

@@ -343,7 +343,13 @@
         </a>
 
     {% endif %}
+    {% if user_role and user_role.role == 'student' %}
 
+        <a href="/profile/">
+            Profile
+        </a>
+    {% endif %}
+   
     <a href="/logout/">
         Logout
     </a>

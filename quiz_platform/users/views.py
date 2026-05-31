@@ -97,22 +97,21 @@ def staff_register(request):
     )
 
 
+from django.contrib import messages
+
+
+
 def user_login(request):
 
     if request.method == 'POST':
 
         username = request.POST['username']
-
         password = request.POST['password']
 
         user = authenticate(
-
             request,
-
             username=username,
-
             password=password
-
         )
 
         if user is not None:
@@ -133,11 +132,16 @@ def user_login(request):
                 'user_dashboard'
             )
 
+        else:
+            messages.error(
+                request,
+                "Invalid username or password."
+            )
+
     return render(
         request,
         'login.html'
     )
-
 
 def user_logout(request):
 

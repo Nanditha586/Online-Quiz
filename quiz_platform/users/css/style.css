@@ -150,7 +150,16 @@ body{
     color:#1e3c72;
     margin-bottom:10px;
 }
-
+.error-message{
+    background:#ffe5e5;
+    color:#dc3545;
+    border:1px solid #dc3545;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:15px;
+    text-align:center;
+    font-weight:600;
+}
 /* ANIMATION */
 
 @keyframes fadeIn{

@@ -531,28 +531,30 @@ def quiz_questions(request, quiz_id):
             'questions': questions
         }
     )
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Question
 
 @login_required
+@staff_only
 def edit_question(request, question_id):
 
     question = get_object_or_404(
         Question,
-        id=question_id,
-        quiz__created_by=request.user
+        id=question_id
     )
 
-    if request.method == "POST":
+    if request.method == 'POST':
 
-        question.question = request.POST['question']
-        question.option1 = request.POST['option1']
-        question.option2 = request.POST['option2']
-        question.option3 = request.POST['option3']
-        question.option4 = request.POST['option4']
-        question.correct_answer = request.POST['correct_answer']
-        question.marks = request.POST['marks']
-        question.negative_marks = request.POST['negative_marks']
+        question.question = request.POST.get('question')
+        question.option1 = request.POST.get('option1')
+        question.option2 = request.POST.get('option2')
+        question.option3 = request.POST.get('option3')
+        question.option4 = request.POST.get('option4')
+        question.correct_answer = request.POST.get('correct_answer')
+        question.marks = request.POST.get('marks')
+        question.negative_marks = request.POST.get('negative_marks')
 
+        # IMPORTANT
         question.save()
 
         return redirect(
