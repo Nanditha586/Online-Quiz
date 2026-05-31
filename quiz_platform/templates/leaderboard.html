@@ -153,6 +153,35 @@
             font-weight:bold;
             color:#198754;
         }
+        .filter-box{
+    background:white;
+    padding:20px;
+    margin-bottom:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.filter-box form{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.filter-box select{
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    min-width:180px;
+}
+
+.filter-box button{
+    background:#2a5298;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
 
         /* Empty State */
 
@@ -245,13 +274,7 @@
     {% endif %}
 
      
-    {% if user_role and user_role.role == 'staff' %}
-
-        <a href="/upload-questions/">
-            Upload Questions
-        </a>
-
-    {% endif %}
+    
 
     <a href="/logout/">
         Logout
@@ -267,6 +290,93 @@
         <h1 class="page-title">
             🏆 Leaderboard
         </h1>
+        {% if user_role.role != 'student' %}
+
+<div class="filter-box">
+
+    <form method="GET">
+
+        <select name="year">
+
+            <option value="">
+                All Years
+            </option>
+
+            <option value="1">
+                1st Year
+            </option>
+
+            <option value="2">
+                2nd Year
+            </option>
+
+            <option value="3">
+                3rd Year
+            </option>
+
+            <option value="4">
+                4th Year
+            </option>
+
+        </select>
+
+        <select name="branch">
+
+            <option value="">
+                All Branches
+            </option>
+
+            <option value="CSE">
+                CSE
+            </option>
+
+            <option value="ECE">
+                ECE
+            </option>
+
+            <option value="EEE">
+                EEE
+            </option>
+
+            <option value="IT">
+                IT
+            </option>
+
+            <option value="MECH">
+                MECH
+            </option>
+
+            <option value="CIVIL">
+                CIVIL
+            </option>
+
+        </select>
+
+        <select name="quiz">
+
+            <option value="">
+                All Quizzes
+            </option>
+
+            {% for quiz in quizzes %}
+
+            <option value="{{ quiz.id }}">
+                {{ quiz.title }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <button type="submit">
+            Filter
+        </button>
+
+    </form>
+
+</div>
+
+{% endif %}
 
         {% if leaderboard_data %}
 

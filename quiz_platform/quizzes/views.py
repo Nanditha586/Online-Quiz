@@ -177,25 +177,62 @@ def submit_quiz(request, quiz_id):
         }
     )
 
+from .models import Result, UserRole, StudentProfile, Quiz
 
-
-@login_required
 def leaderboard(request):
 
-    leaderboard_data = Result.objects.exclude(
-        user__userrole__role='staff'
-    ).order_by('-score')
+    user_role = UserRole.objects.get(user=request.user)
 
-    user_role = UserRole.objects.filter(
-        user=request.user
-    ).first()
+    if user_role.role == 'student':
+
+        student_profile = StudentProfile.objects.get(
+            user=request.user
+        )
+
+        leaderboard_data = Result.objects.filter(
+            user__userrole__role='student',
+            user__studentprofile__year=student_profile.year,
+            user__studentprofile__branch=student_profile.branch
+        ).order_by('-score')
+
+    else:
+
+        leaderboard_data = Result.objects.filter(
+            user__userrole__role='student'
+        )
+
+        year = request.GET.get('year')
+        branch = request.GET.get('branch')
+        quiz_id = request.GET.get('quiz')
+
+        if year:
+            leaderboard_data = leaderboard_data.filter(
+                user__studentprofile__year=year
+            )
+
+        if branch:
+            leaderboard_data = leaderboard_data.filter(
+                user__studentprofile__branch=branch
+            )
+
+        if quiz_id:
+            leaderboard_data = leaderboard_data.filter(
+                quiz_id=quiz_id
+            )
+
+        leaderboard_data = leaderboard_data.order_by(
+            '-score'
+        )
+
+    quizzes = Quiz.objects.all()
 
     return render(
         request,
         'leaderboard.html',
         {
             'leaderboard_data': leaderboard_data,
-            'user_role': user_role
+            'user_role': user_role,
+            'quizzes': quizzes
         }
     )
 @login_required
