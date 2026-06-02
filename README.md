@@ -4,13 +4,9 @@
 
 The Online Quiz & Assessment Platform is a web-based application designed to conduct secure, interactive, and automated MCQ-based quizzes. The platform allows students to participate in timed assessments, receive instant results, and view rankings through a leaderboard system. Staff and administrators can create quizzes, upload questions in bulk, monitor student performance, and analyze assessment data through dashboards.
 
----
-
 ## Objective
 
 Traditional quiz and assessment methods are often time-consuming, difficult to manage, and prone to manual evaluation errors. This project aims to automate the assessment process by providing a digital platform that supports quiz creation, question management, automatic evaluation, performance tracking, and analytics.
-
----
 
 ## Features
 
@@ -50,8 +46,6 @@ Traditional quiz and assessment methods are often time-consuming, difficult to m
 - Quiz Monitoring
 - Performance Analytics
 
----
-
 ## Technology Stack
 
 ### Frontend
@@ -81,8 +75,6 @@ Traditional quiz and assessment methods are often time-consuming, difficult to m
 
 - Git
 - GitHub
-
----
 
 ## Database Models
 
